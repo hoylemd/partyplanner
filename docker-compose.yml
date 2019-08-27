@@ -8,15 +8,17 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - postgres-data
+      - postgres_data:/var/lib/postgresql/data
   app:
-    build .
+    build: app/
     container_name: 'app'
     environment:
       - DB_HOST
       - DB_USER
       - DB_PASS
       - DB_NAME
+      - APP_HOST
+      - DEBUG=True
     volumes:
       - ./app:/usr/app
     depends_on:
@@ -35,4 +37,4 @@ services:
       - 80:80
 
 volumes:
-  - postgres-data
+  postgres_data:

@@ -1,8 +1,8 @@
 # TODO List
 
-- [ ] bootstrap docker constellation
-- [ ] bootstrap app server
-- [ ] bootstrap nginx config
+- [x] bootstrap docker constellation
+- [x] bootstrap app server
+- [x] bootstrap nginx config
 - [ ] implement data model
 - [ ] implement event list view
 - [ ] implement signup view
