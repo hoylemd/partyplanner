@@ -4,5 +4,5 @@ WORKDIR /usr/app
 COPY requirements.txt /usr/app/
 RUN pip install -r requirements.txt
 
-COPY partyplanner events manage.py pytest.ini partyplanner.wsgi /usr/app/
-CMD ["gunicorn", "partyplanner.wsgi"]
+COPY partyplanner events manage.py pytest.ini gunicorn_config.py /usr/app/
+CMD ["gunicorn", "-c", "gunicorn_config.py"]
