@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    image: 'postgres'
+    container_name: 'db'
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgres-data
+  app:
+    build .
+    container_name: 'app'
+    environment:
+      - DB_HOST
+      - DB_USER
+      - DB_PASS
+      - DB_NAME
+    volumes:
+      - ./app:/usr/app
+    depends_on:
+      - db
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+  web:
+    image: nginx
+    container_name: 'web'
+    depends_on:
+      - db
+      - app
+    volumes:
+      - ./nginx:/etc/nginx:ro
+      - ./static:/usr/share/nginx/static:ro
+    ports:
+      - 80:80
+
+volumes:
+  - postgres-data
