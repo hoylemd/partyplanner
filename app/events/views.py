@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView, CreateView, RedirectView
 from django.urls import reverse_lazy
+from django.db import IntegrityError
 
 from events.models import Event
 
@@ -50,7 +51,11 @@ class Register(LoginRequiredMixin, RedirectView):
     def post(self, request, **kwargs):
         event = Event.objects.get(pk=kwargs['pk'])
 
-        record = event.attendance_set.create(user=request.user)
-        record.save()
+        try:
+            record = event.attendance_set.create(user=request.user)
+        except IntegrityError:
+            # a record already exists, so just delete it
+            record = event.attendance_set.get(user=request.user)
+            record.delete()
 
         return super().post(request, **kwargs)

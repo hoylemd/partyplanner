@@ -12,7 +12,7 @@
 - [x] implement signup view
 - [x] implement create event view
 - [x] implement access control
-- [ ] implement register/unregister
+- [x] implement register/unregister
 - [ ] implement edit event view
 - [ ] bootstrap react app
 - [ ] implement event list in react
