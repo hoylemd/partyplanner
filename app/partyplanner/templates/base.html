@@ -1,0 +1,9 @@
+{% extends 'skeleton.html' %}
+
+{% block header %}
+{% if user.is_anonymous %}
+  <a href="{% url 'login' %}">Log In</a>
+{% else %}
+  Welcome, {{ user.first_name }}. <a href="{% url 'logout' %}">Log Out</a>
+{% endif %}
+{% endblock header %}

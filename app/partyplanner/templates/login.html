@@ -1,18 +1,20 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <h1>PartyPlanner!</h1>
-    <h2>Login</h2>
+{% extends 'skeleton.html' %}
 
-    <form method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit"/ value='Log In'>
-    </form>
+{% block header %}
+<h1>PartyPlanner!</h1>
+<h2>Login</h2>
+{% endblock header %}
 
-    <div>
-      <a title='Signup'>Sign up</a>
-    </div>
-  </body>
-</html>
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit"/ value='Log In'>
+</form>
+{% endblock content %}
+
+{% block footer %}
+<div>
+  <a href="{% url 'signup' %}" title='Signup'>Sign up</a>
+</div>
+{% endblock footer %}

@@ -1,27 +1,29 @@
-<html>
-  <head>
-  </head>
-  <body>
-    <a href="{% url 'event_list' %}" title='Back to list'>Back to list</a>
-    <h1>{{ event.name}} </h1>
+{% extends 'base.html' %}
 
-    {% if event.image %}
-    <img src="{{ event.image }}" title="{{ event.name }} picture"/>
-    {% endif %}
+{% block header %}
+{{ block.super }}
+<a href="{% url 'event_list' %}" title='Back to list'>Back to list</a>
+{% endblock header %}
 
-    <h3>Hosted by {{ event.owner.first_name }} {{ event.owner.last_name }}</h3>
-    <p>{{ event.description }}</p>
+{% block content %}
+<h1>{{ event.name}} </h1>
 
-    <div>
-      <strong>Starts @:</strong> <span>{{ event.starts_at }}</span>
-    </div>
-    <div>
-      <strong>Ends @:</strong> <span>{{ event.ends_at }}</span>
-    </div>
+{% if event.image %}
+<img src="{{ event.image }}" title="{{ event.name }} picture"/>
+{% endif %}
 
-    <h3>Attendees:</h3>
-    <ul>
-      <li>Nobody!</li>
-    </ul>
-  </body>
-</html>
+<h3>Hosted by {{ event.owner.first_name }} {{ event.owner.last_name }}</h3>
+<p>{{ event.description }}</p>
+
+<div>
+  <strong>Starts @:</strong> <span>{{ event.starts_at }}</span>
+</div>
+<div>
+  <strong>Ends @:</strong> <span>{{ event.ends_at }}</span>
+</div>
+
+<h3>Attendees:</h3>
+<ul>
+  <li>Nobody!</li>
+</ul>
+{% endblock content %}
