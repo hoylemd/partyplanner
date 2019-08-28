@@ -33,10 +33,18 @@
 {% endif %}
 
 <ul>
-  {% for attendee in event.attendance_set.all %}
-    <li>{{ attendee.user.first_name }} {{ attendee.user.last_name }}</li>
-  {% empty %}
-    <li>Nobody yet!</li>
-  {% endfor %}
+{% for attendee in event.attendance_set.all %}
+  <li>
+    {{ attendee.user.first_name }} {{ attendee.user.last_name }}
+    {% if user.pk == attendee.user.pk %}
+    <form action="{% url 'register' pk=event.pk %}" method=POST>
+      {% csrf_token %}
+      <input type="submit" value="Unregister"/>
+    </form>
+    {% endif %}
+  </li>
+{% empty %}
+  <li>Nobody yet!</li>
+{% endfor %}
 </ul>
 {% endblock content %}
