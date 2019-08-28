@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy
 
 
 class Event(models.Model):
@@ -15,6 +16,9 @@ class Event(models.Model):
     ends_at = models.DateTimeField()
     # intended to be a url to an image
     image = models.CharField(max_length=255, blank=True)
+
+    def get_absolute_url(self):
+        return reverse_lazy('event_detail', kwargs={'pk': self.pk})
 
 
 class Attendance(models.Model):

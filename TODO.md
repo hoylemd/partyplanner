@@ -7,7 +7,8 @@
 - [x] set up routing
 - [x] implement event list view
 - [x] implement event details view
-- [ ] implement login view
+- [x] implement login view
+- [x] implement event absolute url
 - [ ] implement signup view
 - [ ] implement create event view
 - [ ] implement register/unregister
@@ -18,3 +19,7 @@
 - [ ] implement event details in react
 - [ ] implement register/unregister
 - [ ] implement edit event in react
+
+## Nice-to-have
+
+- [ ] template inheritance

@@ -2,9 +2,6 @@
 
 ## Architecture
 
-Describe the overall architecture of the application and technologies used (feel free to use
-diagrams)
-
 Overall, there will be 3 main components of the application: The app server, the database, and the
 web interface. Each of these exist as a docker component in the development environment, but the
 database and web interface would likely exist on their own as a managed service in production (e.g.
