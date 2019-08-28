@@ -4,12 +4,12 @@
 - [x] bootstrap app server
 - [x] bootstrap nginx config
 - [x] implement data model
-- [ ] set up routing
-- [ ] implement event list view
-- [ ] implement signup view
-- [ ] implement login view
-- [ ] implement create event view
+- [x] set up routing
+- [x] implement event list view
 - [ ] implement event details view
+- [ ] implement login view
+- [ ] implement signup view
+- [ ] implement create event view
 - [ ] implement register/unregister
 - [ ] implement edit event view
 - [ ] bootstrap react app

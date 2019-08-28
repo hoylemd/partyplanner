@@ -2,7 +2,8 @@
 
 ## Architecture
 
-Describe the overall architecture of the application and technologies used (feel free to use diagrams)
+Describe the overall architecture of the application and technologies used (feel free to use
+diagrams)
 
 Overall, there will be 3 main components of the application: The app server, the database, and the
 web interface. Each of these exist as a docker component in the development environment, but the
@@ -13,7 +14,8 @@ The app server will be a django application which handles the business logic of 
 first, it will also render all of the web pages using it's own templating engine (Jinja2). I've
 chosen to use Django, as I know it very well, and it allows for rapid prototyping of web
 applications as it comes preconfigured with a lot of common functionality so development work can
-focus on real business value.
+focus on real business value. Note: The jinja-based UI will be very minimal - just something to let
+me check that things are working.
 
 The database is exactly what it sounds like - the persistent storage layer of the application. I'm
 using Postgres because that happens to be the database technology with which I am most familiar. One
@@ -41,12 +43,11 @@ They are as follows:
 - Register for Event*
 - Unregister from Event*
 
-The last two(*) aren't quite fully functional pages, as they are simply actions. The user would click a
-button on the event details page, which would make a request to the app server, after which the user
-remains on the updated event details page.
-
-Four of these(**) require a form for the user to fill out, but the create and edit event forms are
-going to be essentially the same. So 3 forms are required:
+The last two(*) aren't quite fully functional pages, as they are simply actions. The user would
+click a button on the event details page, which would make a request to the app server, after which
+the user remains on the updated event details page. Four of these(**) require a form for the user to
+fill out, but the create and edit event forms are going to be essentially the same. So 3 forms are
+required:
 
 - Sign up form
 - Log in form
