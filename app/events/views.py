@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, ListView, CreateView
 
 from events.models import Event
@@ -16,7 +17,7 @@ class EventDetail(DetailView):
     model = Event
 
 
-class EventCreate(CreateView):
+class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
     fields = (
         'name', 'description', 'starts_at', 'ends_at', 'image'
