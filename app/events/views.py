@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, RedirectView
+from django.urls import reverse_lazy
 
 from events.models import Event
 
@@ -16,6 +17,19 @@ class EventList(ListView):
 class EventDetail(DetailView):
     model = Event
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        event = context['event']
+
+        context['user_may_register'] = (
+            not user.is_anonymous
+            and user.pk not in event.attendance_set.values_list('user', flat=True)
+        )
+
+        return context
+
 
 class EventCreate(LoginRequiredMixin, CreateView):
     model = Event
@@ -27,3 +41,16 @@ class EventCreate(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
 
         return super().form_valid(form)
+
+
+class Register(LoginRequiredMixin, RedirectView):
+    def get_redirect_url(self, **kwargs):
+        return reverse_lazy('event_detail', kwargs=kwargs)
+
+    def post(self, request, **kwargs):
+        event = Event.objects.get(pk=kwargs['pk'])
+
+        record = event.attendance_set.create(user=request.user)
+        record.save()
+
+        return super().post(request, **kwargs)

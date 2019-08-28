@@ -23,8 +23,20 @@
   <strong>Ends @:</strong> <span>{{ event.ends_at }}</span>
 </div>
 
-<h3>Attendees:</h3>
+<h3>Guest List:</h3>
+
+{% if user_may_register %}
+  <form action="{% url 'register' pk=event.pk %}" method=POST>
+    {% csrf_token %}
+    <input type="submit" value="Register for this Event"/>
+  </form>
+{% endif %}
+
 <ul>
-  <li>Nobody!</li>
+  {% for attendee in event.attendance_set.all %}
+    <li>{{ attendee.user.first_name }} {{ attendee.user.last_name }}</li>
+  {% empty %}
+    <li>Nobody yet!</li>
+  {% endfor %}
 </ul>
 {% endblock content %}
