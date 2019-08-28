@@ -6,7 +6,7 @@
 - [x] implement data model
 - [x] set up routing
 - [x] implement event list view
-- [ ] implement event details view
+- [x] implement event details view
 - [ ] implement login view
 - [ ] implement signup view
 - [ ] implement create event view
