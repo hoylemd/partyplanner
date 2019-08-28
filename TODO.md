@@ -3,7 +3,8 @@
 - [x] bootstrap docker constellation
 - [x] bootstrap app server
 - [x] bootstrap nginx config
-- [ ] implement data model
+- [x] implement data model
+- [ ] set up routing
 - [ ] implement event list view
 - [ ] implement signup view
 - [ ] implement login view
