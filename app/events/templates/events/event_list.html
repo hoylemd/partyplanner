@@ -2,6 +2,12 @@
   <head>
   </head>
   <body>
+    {% if user.is_anonymous %}
+      <a href="{% url 'login' %}">Log In</a>
+    {% else %}
+      Welcome, {{ user.first_name }}. <a href="{% url 'logout' %}">Log Out</a>
+    {% endif %}
+
     <h1>List of events</h1>
     <ul>
       {% for event in event_list %}
