@@ -3,6 +3,7 @@ backcall==0.1.0
 certifi==2019.6.16
 decorator==4.4.0
 Django==2.2.4
+gunicorn==19.9.0
 ipdb==0.12.2
 ipython==7.7.0
 ipython-genutils==0.2.0

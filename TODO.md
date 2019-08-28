@@ -13,8 +13,6 @@
 - [ ] implement edit event view
 - [ ] bootstrap react app
 - [ ] implement event list in react
-- [ ] implement signup in react
-- [ ] implement login in react
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister
