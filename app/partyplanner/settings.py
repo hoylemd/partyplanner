@@ -26,6 +26,8 @@ SECRET_KEY = '=(_@k#rl%h#-8-0_=2r3wyl+va+pwfci=i@j$2_%-ug&c^fuyl'
 DEBUG = os.environ.get('DEBUG', False)
 
 ALLOWED_HOSTS = [os.environ['APP_HOST']]
+if DEBUG:
+    ALLOWED_HOSTS.append('localhost')
 
 
 # Application definition
