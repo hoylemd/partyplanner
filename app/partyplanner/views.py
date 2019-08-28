@@ -8,6 +8,8 @@ from django.contrib.auth import login, logout
 from django.views.generic import FormView, RedirectView
 from django.urls import reverse_lazy
 
+from partyplanner.forms import SignUpForm
+
 
 class Login(FormView):
     """
@@ -32,3 +34,18 @@ class Logout(RedirectView):
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
+
+
+class Signup(FormView):
+    """
+    Allows a user to sign up for an account
+    """
+    success_url = reverse_lazy('event_list')
+    form_class = SignUpForm
+    template_name = 'signup.html'
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+
+        return super().form_valid(form)

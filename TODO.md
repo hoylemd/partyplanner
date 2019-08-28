@@ -9,7 +9,7 @@
 - [x] implement event details view
 - [x] implement login view
 - [x] implement event absolute url
-- [ ] implement signup view
+- [x] implement signup view
 - [ ] implement create event view
 - [ ] implement register/unregister
 - [ ] implement edit event view
@@ -22,4 +22,4 @@
 
 ## Nice-to-have
 
-- [ ] template inheritance
+- [x] template inheritance
