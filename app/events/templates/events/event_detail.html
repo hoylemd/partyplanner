@@ -3,10 +3,11 @@
 {% block header %}
 {{ block.super }}
 <a href="{% url 'event_list' %}" title='Back to list'>Back to list</a>
+
+<h1>{{ event.name}} </h1>
 {% endblock header %}
 
 {% block content %}
-<h1>{{ event.name}} </h1>
 
 {% if event.image %}
 <img src="{{ event.image }}" title="{{ event.name }} picture"/>

@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 
 from events.models import Event
 
@@ -14,3 +14,15 @@ class EventList(ListView):
 
 class EventDetail(DetailView):
     model = Event
+
+
+class EventCreate(CreateView):
+    model = Event
+    fields = (
+        'name', 'description', 'starts_at', 'ends_at', 'image'
+    )
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+
+        return super().form_valid(form)

@@ -10,7 +10,8 @@
 - [x] implement login view
 - [x] implement event absolute url
 - [x] implement signup view
-- [ ] implement create event view
+- [x] implement create event view
+- [ ] implement access control
 - [ ] implement register/unregister
 - [ ] implement edit event view
 - [ ] bootstrap react app
