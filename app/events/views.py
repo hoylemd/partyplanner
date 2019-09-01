@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, ListView, CreateView, RedirectView
+from django.views.generic import (
+    DetailView, ListView, CreateView, RedirectView, UpdateView
+)
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
@@ -42,6 +44,10 @@ class EventCreate(LoginRequiredMixin, CreateView):
         form.instance.owner = self.request.user
 
         return super().form_valid(form)
+
+
+class EventEdit(LoginRequiredMixin, UpdateView):
+    model = Event
 
 
 class Register(LoginRequiredMixin, RedirectView):
