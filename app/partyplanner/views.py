@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, RedirectView
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
 
 from partyplanner.forms import SignUpForm
 
@@ -18,6 +19,11 @@ class Login(FormView):
     success_url = reverse_lazy('event_list')
     form_class = AuthenticationForm
     template_name = 'login.html'
+
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect(self.success_url)
+        return super().get(request)
 
     def form_valid(self, form):
         login(self.request, form.get_user())
