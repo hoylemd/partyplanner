@@ -4,14 +4,24 @@
 {{ block.super }}
 <a href="{% url 'event_list' %}" title='Back to list'>Back to list</a>
 
+{% if event.name %}
+<h1>Editing: {{ event.name }}</h2>
+{% else %}
 <h1>New Event</h1>
+{% endif %}
 {% endblock header %}
 
 {% block content %}
 <form method="POST">
 {% csrf_token %}
 {{ form.as_p }}
+
+{% if event.pk %}
+<input type="submit" value='Save'/>
+{% else %}
 <input type="submit" value='Create'/>
+{% endif %}
+
 </form>
 
 {% endblock content %}

@@ -5,6 +5,10 @@
 <a href="{% url 'event_list' %}" title='Back to list'>Back to list</a>
 
 <h1>{{ event.name}} </h1>
+
+{% if event.owner == user %}
+<p><a href="{% url 'event_edit' pk=event.pk %}" title="Edit this event">Edit</a></p>
+{% endif %}
 {% endblock header %}
 
 {% block content %}

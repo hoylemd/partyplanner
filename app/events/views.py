@@ -48,6 +48,9 @@ class EventCreate(LoginRequiredMixin, CreateView):
 
 class EventEdit(LoginRequiredMixin, UpdateView):
     model = Event
+    fields = (
+        'name', 'description', 'starts_at', 'ends_at', 'image'
+    )
 
 
 class Register(LoginRequiredMixin, RedirectView):
