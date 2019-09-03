@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.views.generic import (
     DetailView, ListView, CreateView, RedirectView, UpdateView
 )
@@ -6,6 +6,14 @@ from django.urls import reverse_lazy
 from django.db import IntegrityError
 
 from events.models import Event
+
+
+class OwnerOnlyAccessMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user != self.get_object().owner:
+            return self.handle_no_permission()
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class EventList(ListView):
@@ -46,7 +54,7 @@ class EventCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class EventEdit(LoginRequiredMixin, UpdateView):
+class EventEdit(LoginRequiredMixin, OwnerOnlyAccessMixin, UpdateView):
     model = Event
     fields = (
         'name', 'description', 'starts_at', 'ends_at', 'image'

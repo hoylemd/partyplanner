@@ -14,7 +14,7 @@
 - [x] implement access control
 - [x] implement register/unregister
 - [x] implement edit event view
-- [ ] access control edit view
+- [x] access control edit view
 - [ ] bootstrap react app
 - [ ] implement event list in react
 - [ ] implement create event in react
