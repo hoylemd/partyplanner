@@ -25,13 +25,25 @@ services:
       - ./app:/usr/app
     depends_on:
       - db
+    stdin_open: true
+    tty: true
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  spa:
+    build: spa/
+    container_name: 'spa'
+    volumes:
+      - ./spa:/usr/app
+    stdin_open: true
+    tty: true
+
   web:
     image: nginx
     container_name: 'web'
     depends_on:
       - db
       - app
+      - spa
     volumes:
       - ./nginx:/etc/nginx:ro
       - ./static:/usr/share/nginx/static:ro

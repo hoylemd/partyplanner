@@ -1,14 +1,9 @@
-"""
-Modified from:
-https://coderwall.com/p/sll1kw/django-auth-class-based-views-login-and-logout
-"""
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, RedirectView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-
 from partyplanner.forms import SignUpForm
 
 
