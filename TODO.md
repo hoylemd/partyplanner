@@ -15,7 +15,8 @@
 - [x] implement register/unregister
 - [x] implement edit event view
 - [x] access control edit view
-- [ ] bootstrap react app
+- [x] bootstrap react app
+- [ ] refactor to drf
 - [ ] implement event list in react
 - [ ] implement create event in react
 - [ ] implement event details in react
