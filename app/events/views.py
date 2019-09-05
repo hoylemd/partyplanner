@@ -5,7 +5,15 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
+from rest_framework import viewsets
+
 from events.models import Event
+from events.serializers import EventSerializer
+
+
+class EventViewset(viewsets.ModelViewSet):
+    serializer_class = EventSerializer
+    queryset = Event.objects.all()
 
 
 class OwnerOnlyAccessMixin(AccessMixin):

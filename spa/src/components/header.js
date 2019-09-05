@@ -5,8 +5,8 @@ class Header extends React.Component {
   logged_out_nav () {
     return(
       <ul>
-        <li onClick={() => this.props.set_form('login')}>login</li>
-        <li onClick={() => this.props.set_form('signup')}>signup</li>
+        <li onClick={() => this.props.set_page('login')}>login</li>
+        <li onClick={() => this.props.set_page('signup')}>signup</li>
       </ul>
     );
   }
@@ -25,12 +25,12 @@ class Header extends React.Component {
       <div className="header">
         {this.props.user ? this.logged_in_nav() : this.logged_out_nav()}
       </div>
-    )
+    );
   }
 }
 Header.propTypes = {
   user: PropTypes.object,
-  set_form: PropTypes.func.isRequired,
+  set_page: PropTypes.func.isRequired,
   handle_logout: PropTypes.func.isRequired
 };
 

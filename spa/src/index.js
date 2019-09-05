@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import Header from './components/header';
 import LoginForm from './components/login_form';
 import SignupForm from './components/signup_form';
+import EventList from './components/event_list';
+import EventDetail from './components/event_detail';
 
 import './index.css';
 
@@ -23,7 +25,7 @@ class PartyPlanner extends React.Component {
       localStorage.setItem('token', blob.token);
       this.setState({
         not_logged_in: false,
-        displayed_form: '',
+        displayed_page: '',
         user: blob.user
       });
     });
@@ -42,7 +44,7 @@ class PartyPlanner extends React.Component {
       localStorage.setItem('token', blob.token);
       this.setState({
         not_logged_in: false,
-        displayed_form: '',
+        displayed_page: '',
         user: blob
       });
     });
@@ -56,17 +58,11 @@ class PartyPlanner extends React.Component {
     });
   };
 
-  /*
-  set_form(form) {
+  set_page = (form, pk) => {
+    pk = pk || null;
     this.setState({
-      displayed_form: form
-    });
-  }
-  */
-
-  set_form = form => {
-    this.setState({
-      displayed_form: form
+      displayed_page: form,
+      pk: pk
     });
   };
 
@@ -82,14 +78,43 @@ class PartyPlanner extends React.Component {
     );
   };
 
-  get_form(name) {
+  make_event_list = () => {
+    return (
+      <EventList
+        api_host={API_HOST}
+        is_logged_in={!this.state.not_logged_in}
+        set_page={this.set_page}
+      />
+    );
+  };
+
+  make_event_form = () => {
+    return (
+      <div>Event form</div>
+    );
+  };
+
+  make_event_detail = (pk) => {
+    return (
+      <EventDetail
+        api_host={API_HOST}
+        set_page={this.set_page}
+        pk={pk}
+      />
+    )
+  };
+
+  get_page(name, pk) {
+    pk = pk || null;
     let maker = {
       'login': this.make_login_form,
-      'signup': this.make_signup_form
-    }[name];
+      'signup': this.make_signup_form,
+      'event_list': this.make_event_list,
+      'event_create': this.make_event_form,
+      'event_detail': this.make_event_detail,
+    }[name] || this.make_event_list
 
-    if (maker) return maker();
-    return null;
+    return maker(pk);
   }
 
   componentDidMount() {
@@ -109,16 +134,16 @@ class PartyPlanner extends React.Component {
   }
 
   render() {
-    let form = this.get_form(this.state.displayed_form);
+    let page = this.get_page(this.state.displayed_page, this.state.pk);
 
     return (
       <div className="partyPlanner">
         <Header
           user={this.state.user}
-          set_form={this.set_form}
+          set_page={this.set_page}
           handle_logout={this.handle_logout}
         />
-        {form}
+        {page}
       </div>
     );
   }
@@ -126,7 +151,7 @@ class PartyPlanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayed_form: '',
+      displayed_page: '',
       not_logged_in: localStorage.getItem('token') ? false : true,
       user: null
     };
