@@ -11,15 +11,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-  app:
+  api:
     build: app/
-    container_name: 'app'
+    container_name: 'api'
     environment:
       - DB_HOST
       - DB_USER
       - DB_PASS
       - DB_NAME
-      - APP_HOST
+      - API_HOST
       - DEBUG=True
     volumes:
       - ./app:/usr/app
@@ -42,7 +42,7 @@ services:
     container_name: 'web'
     depends_on:
       - db
-      - app
+      - api
       - spa
     volumes:
       - ./nginx:/etc/nginx:ro
