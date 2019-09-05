@@ -1,3 +1,15 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
 }
+
+.header {
+  background-color: #BDAD50; /* gold-ish colour */
+}
+
+.header ul li {
+  display: inline-block;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
