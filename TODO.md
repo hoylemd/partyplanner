@@ -16,8 +16,8 @@
 - [x] implement edit event view
 - [x] access control edit view
 - [x] bootstrap react app
-- [ ] refactor to drf
-- [ ] refactor to jwts
+- [x] refactor to drf
+- [x] refactor to jwts
 - [ ] implement event list in react
 - [ ] implement create event in react
 - [ ] implement event details in react
