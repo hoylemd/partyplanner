@@ -30,7 +30,7 @@ class LoginForm extends React.Component {
           value={this.state.password}
           onChange={this.handle_change}
         />
-        <input type="submit" />
+        <input type="submit" value="Log in"/>
       </form>
     );
   }

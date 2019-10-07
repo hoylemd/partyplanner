@@ -12,41 +12,37 @@ import './index.css';
 const API_HOST = 'http://localhost'
 
 class PartyPlanner extends React.Component {
-  handle_login = (e, data) => {
+  handle_login = async (e, data) => {
     e.preventDefault();
 
-    fetch(`${API_HOST}/token-auth/`, {
+    const response = await fetch(`${API_HOST}/token-auth/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(blob => {
-      localStorage.setItem('token', blob.token);
-      this.setState({
-        not_logged_in: false,
-        displayed_page: '',
-        user: blob.user
-      });
+    const blob = await response.json()
+    localStorage.setItem('token', blob.token);
+    this.setState({
+      not_logged_in: false,
+      displayed_page: 'event_list',
+      user: blob.user
     });
   };
 
-  handle_signup = (e, data) => {
+  handle_signup = async (e, data) => {
     e.preventDefault();
 
-    fetch(`${API_HOST}/users/`, {
+    const response = await fetch(`${API_HOST}/users/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    .then(response => response.json())
-    .then(blob => {
-      localStorage.setItem('token', blob.token);
-      this.setState({
-        not_logged_in: false,
-        displayed_page: '',
-        user: blob
-      });
+    const blob = await response.json()
+    localStorage.setItem('token', blob.token);
+    this.setState({
+      not_logged_in: false,
+      displayed_page: 'event_list',
+      user: blob
     });
   };
 
@@ -54,7 +50,8 @@ class PartyPlanner extends React.Component {
     localStorage.removeItem('token');
     this.setState({
       not_logged_in: true,
-      user: null
+      user: null,
+      displayed_page: 'login'
     });
   };
 
@@ -112,25 +109,29 @@ class PartyPlanner extends React.Component {
       'event_list': this.make_event_list,
       'event_create': this.make_event_form,
       'event_detail': this.make_event_detail,
-    }[name] || this.make_event_list
+    }[name] || this.make_login_form
 
     return maker(pk);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.state.not_logged_in) {
+      this.setState({ displayed_page: 'login'});
       return;
     }
 
-    fetch(`${API_HOST}/whoami/`, {
+    const response = await fetch(`${API_HOST}/whoami/`, {
       headers: {
         Authorization: `JWT ${localStorage.getItem('token')}`
       }
     })
-    .then(response => response.json())
-    .then(blob => {
+    const blob = await response.json()
+    if (response.ok) {
       this.setState({ user: blob });
-    });
+    } else {
+      throw Error(`${response.statusText}: ${blob['detail']}`);
+      this.setState({ displayed_page: 'login'});
+    }
   }
 
   render() {

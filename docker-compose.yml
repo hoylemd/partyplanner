@@ -20,18 +20,23 @@ services:
       - DB_PASS
       - DB_NAME
       - API_HOST
+      - API_SECRET_KEY
       - DEBUG=True
     depends_on:
       - db
     stdin_open: true
     tty: true
     command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    volumes:
+      - ./app:/usr/app/
 
   spa:
     build: spa/
     container_name: 'spa'
     stdin_open: true
     tty: true
+    volumes:
+      - ./spa/src:/usr/app/src
 
   web:
     image: nginx
