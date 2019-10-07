@@ -18,7 +18,9 @@
 - [x] bootstrap react app
 - [x] refactor to drf
 - [x] refactor to jwts
-- [ ] implement event list in react
+- [x] implement event list in react
+- [x] fix authentication
+- [ ] redirect to /app
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister
