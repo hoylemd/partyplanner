@@ -129,8 +129,8 @@ class PartyPlanner extends React.Component {
     if (response.ok) {
       this.setState({ user: blob });
     } else {
-      throw Error(`${response.statusText}: ${blob['detail']}`);
       this.setState({ displayed_page: 'login'});
+      throw Error(`${response.statusText}: ${blob['detail']}`);
     }
   }
 

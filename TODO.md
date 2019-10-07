@@ -20,11 +20,12 @@
 - [x] refactor to jwts
 - [x] implement event list in react
 - [x] fix authentication
-- [ ] redirect to /app
+- [x] redirect to /app
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister
 - [ ] implement edit event in react
+- [ ] raw request tests
 
 ## Nice-to-have
 
