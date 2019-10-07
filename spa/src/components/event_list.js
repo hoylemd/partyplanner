@@ -18,12 +18,11 @@ class EventList extends React.Component {
       events.forEach(event => {
         let element = (
           <li key={event.pk}>
-            <a
+            <button
               onClick={() => this.props.set_page('event_detail', event.pk)}
-              title={event.name}
             >
               {event.name}
-            </a>
+            </button>
           </li>
         );
         elements.push(element);

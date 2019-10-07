@@ -1,5 +1,23 @@
 # PartyPlanner Design Document
 
+## Quickstart
+
+### Install/setup
+
+```bash
+docker-compose build
+```
+
+### Run dev constellation
+
+```bash
+docker-compose up
+```
+
+### Run tests
+
+coming soon!
+
 ## Architecture
 
 Overall, there will be 3 main components of the application: The app server, the database, and the

@@ -6,7 +6,7 @@ class EventDetail extends React.Component {
     let image = null;
     if (event.image) {
       image = (
-        <img src={event.image} title={event.name + ' picture'}/>
+        <img src={event.image} alt={event.name + ' picture'}/>
       );
     }
 
@@ -19,10 +19,10 @@ class EventDetail extends React.Component {
       </ul>
     );
 
-    debugger;
     return (
       <>
       <h1>{event.name}</h1>
+      {image}
       <h3>Hosted by {event.owner}</h3>
       <p>{event.description}</p>
       <div>
