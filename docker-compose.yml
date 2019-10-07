@@ -21,8 +21,6 @@ services:
       - DB_NAME
       - API_HOST
       - DEBUG=True
-    volumes:
-      - ./app:/usr/app
     depends_on:
       - db
     stdin_open: true
@@ -32,8 +30,6 @@ services:
   spa:
     build: spa/
     container_name: 'spa'
-    volumes:
-      - ./spa:/usr/app
     stdin_open: true
     tty: true
 
