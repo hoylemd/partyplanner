@@ -1,0 +1,18 @@
+[
+   {
+        "model": "auth.user",
+        "pk": 70001,
+        "fields": {
+            "password": "pbkdf2_sha256$150000$hd5CH8fMS8GV$EE+DwbMmL9YQQiuEt3UhsPulT8uElKq3YcS8/WPZHaI=",
+            "is_superuser": true,
+            "username": "test_user",
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "",
+            "is_staff": true,
+            "is_active": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

@@ -14,9 +14,14 @@ docker-compose build
 docker-compose up
 ```
 
+The development server will then be accessible via a web browser at
+[http://localhost](http://localhost)
+
 ### Run tests
 
-coming soon!
+```bash
+docker-compose run api ./manage.py test
+```
 
 ## Architecture
 

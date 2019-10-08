@@ -21,11 +21,11 @@
 - [x] implement event list in react
 - [x] fix authentication
 - [x] redirect to /app
+- [ ] raw request tests
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister
 - [ ] implement edit event in react
-- [ ] raw request tests
 
 ## Nice-to-have
 
