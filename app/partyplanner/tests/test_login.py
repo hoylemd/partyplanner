@@ -24,7 +24,7 @@ class TestLogin(TestCase):
             'password': 'hunter2'
         }
         resp = self.client.post('/token-auth/', data=payload)
-        assert resp.status_code == 401
+        assert resp.status_code == 400
 
         blob = resp.json()
         assert blob == {
