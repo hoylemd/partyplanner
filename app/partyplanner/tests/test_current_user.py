@@ -20,9 +20,9 @@ class TestCurrentUser(TestCase):
         """Should return 200 with the user data"""
         user = User.objects.get(pk=70001)  # test user
         token = make_token(user)
-        headers = {'Authorization': f'JWT {token}'}
+        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
 
-        resp = self.client.get('/whoami/', headers=headers)
+        resp = self.client.get('/whoami/', **headers)
 
         assert resp.status_code == 200
 

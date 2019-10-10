@@ -30,3 +30,4 @@
 ## Nice-to-have
 
 - [x] template inheritance
+- [x] better dev env integration
