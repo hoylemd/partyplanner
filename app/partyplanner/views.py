@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from partyplanner.serializers import UserSerializer, UserSerializerWithToken
 
 
+# /whoami/
 class CurrentUser(APIView):
     """
     Determine the current user by their token, and return their data
@@ -16,6 +17,7 @@ class CurrentUser(APIView):
         return Response(serializer.data)
 
 
+# /users/
 class UserList(APIView):
     """
     Create a new user. It's called 'UserList' because normally we'd have a get
@@ -32,5 +34,6 @@ class UserList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# /
 class RedirectToApp(RedirectView):
     url = '/app'
