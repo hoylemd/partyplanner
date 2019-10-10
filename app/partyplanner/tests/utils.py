@@ -9,35 +9,75 @@ def check_dict_keys(subject, model):
     returns a dict mapping the 'bad' keys to the reason they are 'bad', or a
         similar dict for a nested layer
 
+    specing guide:
+    - The following steps are run in order
+    - For every key in `subject` you wish to validate, include that `key` in
+        `model`.
+    - If the value at `key` in `model` is callable, it will be called, passing
+        in the value at `key` in `subject. If it returns a Falsy value OR
+        `True`, that key will be treated as correct. If a non-`True` truthy
+        value is returned or an exception is raised, the `key` field will be
+        marked as bad. If a truthy value was returned, this will be used as the
+        reason string (even if it's not a string, it will become one when
+        interpolated into the report). If an exception was raised, a generic
+        'validation failed' message will be used with the exception info.
+        * This allows for fuzzier checks, like regular expressions, or the
+            is_absent helper
+    - If they key is absent from `subject`, `key` will be marked as bad with an
+        'absent' message
+    - If the value at `key` in `model` is a dictionary, this will recurse,
+        passing the value at `key` in `subject` and the dict in `model` at
+        `key`.
+    - Finally, if the value at `key` in `subject` is not (==) equivalent to the
+        value at `key` in `model`, `key` will be marked as bad.
+
+
     :param subject dict: The dict object to compare to `model`
     :param model dict: The 'spec' dict object to which `subject` will be
         compared
     :returns dict: mapping of bad keys to reason string or dict of nested bad
         keys
     """
-
     bad_keys = {}
 
-    for k, v in model.items():
+    for key, spec in model.items():
+        # if a callable was passed, call it, passing the subject value
+        if callable(spec):
+            result = spec(subject.get(key, None))
+            try:
+                if result and result is not True:
+                    bad_keys[key] = result
+            except Exception as exc:
+                bad_keys[key] = (
+                    f'Failed Validation({exc.__class__.__name__}: {exc}'
+                )
+            continue
+
+        try:
+            value = subject[key]
+        except KeyError:
+            bad_keys[key] = f'Missing'
+            continue
+
         # check for type mismatch
-        if not isinstance(subject[k], model[k].__class__):
-            bad_keys[k] = (
-                f'wrong type: {subject[k].__class__.__name__} '
-                f'(expected {model[k].__class__.__name__})'
+        if not isinstance(value, spec.__class__):
+            bad_keys[key] = (
+                f'wrong type: {value.__class__.__name__} '
+                f'(expected {spec.__class__.__name__})'
             )
             continue
 
-        if isinstance(model[k], dict):
-            # recursively check dicts
-            bad_children = check_dict_keys(subject[k], model[k])
+        # recursively check dicts
+        if isinstance(spec, dict):
+            bad_children = check_dict_keys(value, spec)
             if bad_children:
-                bad_keys[k] = bad_children
+                bad_keys[key] = bad_children
                 continue
 
         # handle arrays?
 
-        if subject[k] != model[k]:
-            bad_keys[k] = f'{subject[k]} != {model[k]}'
+        if value != spec:
+            bad_keys[key] = f'{value} != {spec}'
 
     return bad_keys
 
@@ -72,21 +112,22 @@ class JSONTestCase(TestCase):
     TestCase class that adds the assertContainsJSON method
     """
     def assertContainsJSON(
-        self, response, blob, status_code=200, msg_prefix=""
+        self, response, spec, status_code=200, msg_prefix=""
     ):
         """
         Assert that the json body of `response` matches the spec given by
-        `blob`, and that it's status code is correct.
+        `spec`, and that it's status code is correct.
 
-        keys absent from `blob` will be ignored. This allows for partial
+        keys absent from `spec` will be ignored. This allows for partial
         matching.  works recursively too. If a dict is encountered at a spec'd
         key, the same checks will be done at that nested level too.
 
         Attempts to compose a highly readable error report too
 
         :param response : The test client response to test
-        :param blob dict: spec for the body to test against
-        :param status_code int: expected HTTP status code
+        :param spec dict: spec for the body to test against
+        :param status_code int: expected HTTP status code. Pass a falsy value
+            to disable status_code check. default 200
         :param msg_prefix str: Message with which to prefix the error
             default: 'JSON Mismatch'
         :returns: a dict mapping erroneous field keys to a reason string or a
@@ -95,7 +136,7 @@ class JSONTestCase(TestCase):
             mismatched
         """
 
-        if response.status_code != status_code:
+        if status_code and (response.status_code != status_code):
             try:
                 content = response.json()
             except (ValueError, JSONDecodeError):
@@ -121,7 +162,7 @@ class JSONTestCase(TestCase):
             )
             raise AssertionError(msg) from exc
 
-        bad_keys = check_dict_keys(content, blob)
+        bad_keys = check_dict_keys(content, spec)
         if bad_keys:
             msg = (
                 f"{(msg_prefix + ': ') if msg_prefix else ''}"
@@ -131,3 +172,26 @@ class JSONTestCase(TestCase):
             exc = AssertionError(msg)
             exc.bad_keys = bad_keys
             raise exc
+
+
+JWT_REGEX = r'^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$'
+
+
+def is_jwt(token):
+    """Returns true if `token` is a JWT"""
+    import re
+    if re.match(JWT_REGEX, token):
+        return True
+    return "Not a JWT"
+
+
+def is_absent(value=None):
+    """Returns true if `value` is None"""
+    if value is None:
+        return True
+    return f"Has a value where there should be none ({value})"
+
+
+class SpecHelpers:
+    is_jwt = is_jwt
+    is_absent = is_absent
