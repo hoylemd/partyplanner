@@ -22,12 +22,17 @@
 - [x] fix authentication
 - [x] redirect to /app
 - [x] raw request tests
-- [ ] event fixtures
+- [x] event fixtures
 - [ ] api tests for create event
-- [ ] api tests for event details
+- [x] api tests for event details
 - [ ] api tests for edit event
 - [ ] implement register/unregister in api
   - [ ] views/serializers
+  - [ ] tests
+- [ ] soft-delete events
+  - [ ] model, migration & serializers
+  - [ ] update fixtures
+  - [ ] views
   - [ ] tests
 - [ ] implement create event in react
 - [ ] implement event details in react
