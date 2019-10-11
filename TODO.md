@@ -22,14 +22,13 @@
 - [x] fix authentication
 - [x] redirect to /app
 - [x] raw request tests
-- [ ] remove react
-  - [x] remove spa container
-  - [x] update nginx
-  - [x] remove redirect
-  - [x] repair auth
-
-## old
-
+- [ ] event fixtures
+- [ ] api tests for create event
+- [ ] api tests for event details
+- [ ] api tests for edit event
+- [ ] implement register/unregister in api
+  - [ ] views/serializers
+  - [ ] tests
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister

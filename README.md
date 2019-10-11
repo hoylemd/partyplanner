@@ -21,7 +21,23 @@ The development server will then be accessible via a web browser at
 
 ```bash
 docker-compose run api ./manage.py test
+
 ```
+
+### local virtualenv
+
+If you have set up a virtualenv, you can install the dependencies into that
+virtualenv with
+
+```bash
+pip install -r app/requirements.txt
+```
+
+Then, you can use `manage.sh` at the top level of the repo to interact with the
+django app directly, without a container in the way. Use it exactly as you
+would `manage.py`  This is useful for tracing through and debugging library
+files (e.g. I did this to determine why rest_framework_jwt wasn't seeing the
+headers I added in tests)
 
 ## Architecture
 
