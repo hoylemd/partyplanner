@@ -27,6 +27,7 @@
   - [x] auto-set owner
 - [x] api tests for event details
 - [ ] api tests for edit event
+  - [ ] enforce start time lt end time
 - [ ] implement register/unregister in api
   - [ ] views/serializers
   - [ ] tests
