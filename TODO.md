@@ -23,7 +23,8 @@
 - [x] redirect to /app
 - [x] raw request tests
 - [x] event fixtures
-- [ ] api tests for create event
+- [x] api tests for create event
+  - [x] auto-set owner
 - [x] api tests for event details
 - [ ] api tests for edit event
 - [ ] implement register/unregister in api

@@ -15,6 +15,10 @@ class EventViewset(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
 
+    def perform_create(self, serializer):
+        """On create, set the owner to the request user"""
+        serializer.save(owner=self.request.user)
+
 
 class OwnerOnlyAccessMixin(AccessMixin):
     def dispatch(self, request, *args, **kwargs):
