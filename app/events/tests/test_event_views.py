@@ -22,7 +22,7 @@ class TestEventViews(JSONTestCase):
             'pk': 80001,
             'name': 'Test Event',
             'image': 'http://example.com/event-image.png',
-            'starts_at': '2019-10-15T13:00:00Z'  # != fixture? normalized!
+            'starts_at': '2019-10-15T08:00:00Z'  # != fixture? normalized!
         })
 
     def test_get_event__notfound(self):
@@ -68,7 +68,7 @@ class TestEventViews(JSONTestCase):
                 'name': 'New Years Bonanza!',
                 'description': '',
                 'owner_id': 70001,
-                'ends_at': '2020-01-01T02:00:00Z'  # no tx normalization
+                'ends_at': '2020-01-01T02:00:00Z'
             },
             status_code=201
         )
@@ -128,8 +128,46 @@ class TestEventViews(JSONTestCase):
         self.assertContainsJSON(
             resp,
             {
-                'pk': 80003,
+                'pk': lambda x: x != 80032,  # check pk not set to spec'd val
                 'owner_id': 70001,
             },
             status_code=201
         )
+
+    def test_create_event__invalid_time(self):
+        """Should return 400 with error details"""
+        user = User.objects.get(pk=70001)  # test user
+        token = make_token(user)
+        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
+
+        payload = {
+            'name': 'New Years Bonanza!',
+            'starts_at': datetime(year=2019, month=12, day=31, hour=22),
+            'ends_at': datetime(year=2018, month=1, day=1, hour=2)  # 2 years b4
+        }
+
+        resp = self.client.post('/api/events/', payload, **headers)
+
+        self.assertContainsJSON(
+            resp,
+            {
+                'ends_at': ['End time before start time.']
+            },
+            status_code=400
+        )
+
+    def test_edit_event(self):
+        """Should return 200 with updated event info"""
+        pass
+
+    def test_edit_event__unauth(self):
+        """Should return 401"""
+        pass
+
+    def test_edit_event__not_owner(self):
+        """Should return 403"""
+        pass
+
+    def test_edit_event__invalid_time(self):
+        """Should return 400 with error detail"""
+        pass
