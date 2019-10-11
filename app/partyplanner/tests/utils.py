@@ -195,3 +195,17 @@ def is_absent(value=None):
 class SpecHelpers:
     is_jwt = is_jwt
     is_absent = is_absent
+
+
+def make_token(user, expired=False):
+    """Creates a valid jwt for the given user"""
+    from rest_framework_jwt.settings import api_settings
+    from datetime import timedelta
+
+    payload = api_settings.JWT_PAYLOAD_HANDLER(user)
+    if expired:
+        payload['exp'] += timedelta(days=-1)  # expire it one day ago
+
+    token = api_settings.JWT_ENCODE_HANDLER(payload)
+
+    return token
