@@ -1,0 +1,15 @@
+[
+    {
+        "model": "events.event",
+        "pk": 80001,
+        "fields": {
+          "created_at": "2019-10-11 10:30:00-0500",
+          "owner_id": 70001,
+          "name": "Test Event",
+          "description": "This is an event for testing purposes",
+          "starts_at": "2019-10-15 08:00:00-0500",
+          "ends_at": "2019-10-15 12:00:00-0500",
+          "image": "http://example.com/event-image.png"
+        }
+    }
+]
