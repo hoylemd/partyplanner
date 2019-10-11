@@ -28,7 +28,7 @@ class TestCurrentUser(JSONTestCase):
         token = make_token(user)
         headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
 
-        resp = self.client.get('/whoami/', **headers)
+        resp = self.client.get('/api/whoami/', **headers)
 
         self.assertContainsJSON(resp, {
             'username': 'test_user',
@@ -39,7 +39,7 @@ class TestCurrentUser(JSONTestCase):
     def test_no_token(self):
         """Should return 401"""
         headers = {}
-        resp = self.client.get('/whoami/', **headers)
+        resp = self.client.get('/api/whoami/', **headers)
 
         self.assertEqual(resp.status_code, 401)
 
@@ -49,7 +49,7 @@ class TestCurrentUser(JSONTestCase):
         token = make_token(user, expired=True)
         headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
 
-        resp = self.client.get('/whoami/', **headers)
+        resp = self.client.get('/api/whoami/', **headers)
         self.assertContainsJSON(
             resp, {'detail': 'Signature has expired.'}, status_code=401
         )

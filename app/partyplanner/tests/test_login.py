@@ -10,7 +10,7 @@ class TestLogin(TestCase):
             'username': 'test_user',
             'password': 'password123'
         }
-        resp = self.client.post('/token-auth/', data=payload)
+        resp = self.client.post('/api/token-auth/', data=payload)
         assert resp.status_code == 200
 
         blob = resp.json()
@@ -23,7 +23,7 @@ class TestLogin(TestCase):
             'username': 'test_user',
             'password': 'hunter2'
         }
-        resp = self.client.post('/token-auth/', data=payload)
+        resp = self.client.post('/api/token-auth/', data=payload)
         assert resp.status_code == 400
 
         blob = resp.json()
