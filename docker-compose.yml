@@ -30,12 +30,21 @@ services:
     volumes:
       - ./app:/usr/app/
 
+  spa:
+    build: spa/
+    container_name: 'spa'
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./spa/src:/usr/app/src
+
   web:
     image: nginx
     container_name: 'web'
     depends_on:
       - db
       - api
+      - spa
     volumes:
       - ./nginx:/etc/nginx:ro
       - ./static:/usr/share/nginx/static:ro
