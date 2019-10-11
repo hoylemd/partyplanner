@@ -7,7 +7,7 @@ from partyplanner.tests.utils import JSONTestCase, make_token
 User = get_user_model()
 
 
-class TestEventViews(JSONTestCase):
+class TestRetrieveEvent(JSONTestCase):
     fixtures = ['users.json', 'events.json']
 
     def test_get_event(self):
@@ -46,7 +46,11 @@ class TestEventViews(JSONTestCase):
             resp,
             {'detail': 'Authentication credentials were not provided.'},
             status_code=401
-        )
+        ),
+
+
+class TestCreateEvent(JSONTestCase):
+    fixtures = ['users.json', 'events.json']
 
     def test_create_event(self):
         """Should return 201 with event data"""
@@ -155,6 +159,10 @@ class TestEventViews(JSONTestCase):
             },
             status_code=400
         )
+
+
+class TestEditEvent(JSONTestCase):
+    fixtures = ['users.json', 'events.json']
 
     def test_edit_event(self):
         """Should return 200 with updated event info"""

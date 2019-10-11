@@ -28,7 +28,7 @@
 - [x] api tests for event details
 - [ ] api tests for edit event
   - [x] enforce start time lt end time
-  - [ ] split up event view tests
+  - [x] split up event view tests
 - [ ] implement register/unregister in api
   - [ ] views/serializers
   - [ ] tests
