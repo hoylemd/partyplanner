@@ -8,6 +8,18 @@
 docker-compose build
 ```
 
+Then, migrate the database
+
+```bash
+docker-compose run api python manage.py migrate
+```
+
+Next, add a user
+
+```bash
+docker-compose run api python manage.py createsuperuser
+```
+
 ### Run dev constellation
 
 ```bash
@@ -16,6 +28,13 @@ docker-compose up
 
 The development server will then be accessible via a web browser at
 [http://localhost](http://localhost)
+
+The React app will be accessible at
+[http://localhost/app](http://localhost/app)
+
+If you are logged into the development server, you can browse the Django Rest
+Framework browsable API at
+[http://localhost/api/events](http://localhost/api/events)
 
 ### Run tests
 
