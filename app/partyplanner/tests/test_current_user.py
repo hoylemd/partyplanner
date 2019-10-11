@@ -27,7 +27,11 @@ class TestCurrentUser(JSONTestCase):
         headers = {}
         resp = self.client.get('/api/whoami/', **headers)
 
-        self.assertEqual(resp.status_code, 401)
+        self.assertContainsJSON(
+            resp,
+            {'detail': 'Authentication credentials were not provided.'},
+            status_code=401
+        )
 
     def test_expired_token(self):
         """Should return 401"""
@@ -38,4 +42,14 @@ class TestCurrentUser(JSONTestCase):
         resp = self.client.get('/api/whoami/', **headers)
         self.assertContainsJSON(
             resp, {'detail': 'Signature has expired.'}, status_code=401
+        )
+
+    def test_bad_token(self):
+        """Should return 401"""
+        token = 'blahblahblah'
+        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
+
+        resp = self.client.get('/api/whoami/', **headers)
+        self.assertContainsJSON(
+            resp, {'detail': 'Error decoding signature.'}, status_code=401
         )
