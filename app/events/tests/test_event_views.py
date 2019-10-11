@@ -25,8 +25,23 @@ class TestEventViews(JSONTestCase):
 
     def test_get_event__notfound(self):
         """Should return 404"""
-        pass
+        user = User.objects.get(pk=70001)  # test user
+        token = make_token(user)
+        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
+
+        resp = self.client.get('/api/events/80501/', **headers)
+
+        self.assertContainsJSON(
+            resp, {'detail': 'Not found.'}, status_code=404
+        )
 
     def test_get_event__unauth(self):
         """Should return 401"""
-        pass
+        headers = {}
+        resp = self.client.get('/api/events/80001/', **headers)
+
+        self.assertContainsJSON(
+            resp,
+            {'detail': 'Authentication credentials were not provided.'},
+            status_code=401
+        )
