@@ -7,7 +7,7 @@
           "owner_id": 70001,
           "name": "Test Event",
           "description": "This is an event for testing purposes",
-          "starts_at": "2019-10-15T08:00:00Z",
+          "starts_at": "2019-10-15 08:00:00+0000",
           "ends_at": "2019-10-15 12:00:00+0000",
           "image": "http://example.com/event-image.png"
         }
