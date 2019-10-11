@@ -1,8 +1,10 @@
 from datetime import datetime
+import json
 
 from django.contrib.auth import get_user_model
 
 from partyplanner.tests.utils import JSONTestCase, make_token
+from events.serializers import ISO_8601_FORMAT
 
 User = get_user_model()
 
@@ -96,6 +98,30 @@ class TestCreateEvent(JSONTestCase):
             status_code=400
         )
 
+    def test_create_event__no_start_time(self):
+        """Should return 400 with field errors
+
+        Added to test an edge case with end_data validation
+        """
+        user = User.objects.get(pk=70001)  # test user
+        token = make_token(user)
+        headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
+
+        payload = {
+            'name': 'ETERNAL PARTY',
+            'ends_at': datetime(year=2020, month=1, day=1, hour=2)
+        }
+
+        resp = self.client.post('/api/events/', payload, **headers)
+
+        self.assertContainsJSON(
+            resp,
+            {
+                'starts_at': ['This field is required.'],
+            },
+            status_code=400
+        )
+
     def test_create_event__unauth(self):
         """Should return 401"""
         headers = {}
@@ -166,7 +192,31 @@ class TestEditEvent(JSONTestCase):
 
     def test_edit_event(self):
         """Should return 200 with updated event info"""
-        pass
+        user = User.objects.get(pk=70001)  # test user
+        token = make_token(user)
+        headers = {
+            'HTTP_AUTHORIZATION': f'JWT {token}',
+            'CONTENT_TYPE': 'application/json',  # required for patch
+        }
+
+        new_end_time = datetime(year=2019, month=10, day=16, hour=1)
+        payload = json.dumps({
+            'name': 'TESTING WHEEE!!!!',
+            'ends_at': datetime.strftime(new_end_time, ISO_8601_FORMAT)
+        })
+
+        resp = self.client.patch('/api/events/80001/', payload, **headers)
+
+        self.assertContainsJSON(
+            resp,
+            {
+                'name': 'TESTING WHEEE!!!!',
+                'description': 'This is an event for testing purposes',
+                'owner_id': 70001,
+                'ends_at': '2019-10-16T01:00:00Z'
+            },
+            status_code=200
+        )
 
     def test_edit_event__unauth(self):
         """Should return 401"""
@@ -177,5 +227,13 @@ class TestEditEvent(JSONTestCase):
         pass
 
     def test_edit_event__invalid_time(self):
+        """Should return 400 with error detail"""
+        pass
+
+    def test_full_replace(self):
+        """Should return 200 with updated info"""
+        pass
+
+    def test_full_replace__missing_field(self):
         """Should return 400 with error detail"""
         pass
