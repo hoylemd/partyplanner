@@ -21,7 +21,15 @@
 - [x] implement event list in react
 - [x] fix authentication
 - [x] redirect to /app
-- [ ] raw request tests
+- [x] raw request tests
+- [ ] remove react
+  - [x] remove spa container
+  - [x] update nginx
+  - [x] remove redirect
+  - [x] repair auth
+
+## old
+
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister

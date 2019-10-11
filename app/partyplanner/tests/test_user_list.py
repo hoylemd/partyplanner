@@ -12,7 +12,7 @@ class TestUserList(JSONTestCase):
             'password': 'open_sesame'
         }
 
-        resp = self.client.post('/users/', payload)
+        resp = self.client.post('/api/users/', payload)
 
         self.assertContainsJSON(resp, {
             'token': SpecHelpers.is_jwt,

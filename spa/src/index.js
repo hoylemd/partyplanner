@@ -9,7 +9,7 @@ import EventDetail from './components/event_detail';
 
 import './index.css';
 
-const API_HOST = 'http://localhost'
+const API_HOST = 'http://localhost/api'
 
 class PartyPlanner extends React.Component {
   handle_login = async (e, data) => {
