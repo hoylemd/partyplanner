@@ -220,11 +220,46 @@ class TestEditEvent(JSONTestCase):
 
     def test_edit_event__unauth(self):
         """Should return 401"""
-        pass
+        headers = {
+            'CONTENT_TYPE': 'application/json',  # required for patch
+        }
+
+        new_end_time = datetime(year=2019, month=10, day=16, hour=1)
+        payload = json.dumps({
+            'name': 'TESTING WHEEE!!!!',
+            'ends_at': datetime.strftime(new_end_time, ISO_8601_FORMAT)
+        })
+
+        resp = self.client.patch('/api/events/80001/', payload, **headers)
+
+        self.assertContainsJSON(
+            resp,
+            {'detail': 'Authentication credentials were not provided.'},
+            status_code=401
+        )
 
     def test_edit_event__not_owner(self):
         """Should return 403"""
-        pass
+        user = User.objects.get(pk=70002)  # 2nd test user
+        token = make_token(user)
+        headers = {
+            'HTTP_AUTHORIZATION': f'JWT {token}',
+            'CONTENT_TYPE': 'application/json',  # required for patch
+        }
+
+        new_end_time = datetime(year=2019, month=10, day=16, hour=1)
+        payload = json.dumps({
+            'name': 'TESTING WHEEE!!!!',
+            'ends_at': datetime.strftime(new_end_time, ISO_8601_FORMAT)
+        })
+
+        resp = self.client.patch('/api/events/80001/', payload, **headers)
+
+        self.assertContainsJSON(
+            resp,
+            {'detail': 'You do not have permission to perform this action.'},
+            status_code=403
+        )
 
     def test_edit_event__invalid_time(self):
         """Should return 400 with error detail"""
