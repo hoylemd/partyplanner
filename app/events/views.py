@@ -6,14 +6,17 @@ from django.urls import reverse_lazy
 from django.db import IntegrityError
 
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from events.models import Event
 from events.serializers import EventSerializer
+from events.permissions import IsOwnerOrCreateReadOnly
 
 
 class EventViewset(viewsets.ModelViewSet):
     serializer_class = EventSerializer
     queryset = Event.objects.all()
+    permission_classes = [IsAuthenticated, IsOwnerOrCreateReadOnly]
 
     def perform_create(self, serializer):
         """On create, set the owner to the request user"""

@@ -26,7 +26,7 @@
 - [x] api tests for create event
   - [x] auto-set owner
 - [x] api tests for event details
-- [ ] api tests for edit event
+- [/] api tests for edit event
   - [x] enforce start time lt end time
   - [x] split up event view tests
 - [ ] implement register/unregister in api
