@@ -4,7 +4,6 @@ import json
 from django.contrib.auth import get_user_model
 
 from partyplanner.tests.utils import JSONTestCase, make_token
-from events.serializers import ISO_8601_FORMAT
 
 User = get_user_model()
 
@@ -85,7 +84,9 @@ class TestCreateEvent(JSONTestCase):
         token = make_token(user)
         headers = {'HTTP_AUTHORIZATION': f'JWT {token}'}
 
-        payload = {'name': 'TIMELESS PARTY'}
+        payload = {
+            'name': 'TIMELESS PARTY'
+        }
 
         resp = self.client.post('/api/events/', payload, **headers)
 
@@ -202,7 +203,7 @@ class TestEditEvent(JSONTestCase):
         new_end_time = datetime(year=2019, month=10, day=16, hour=1)
         payload = json.dumps({
             'name': 'TESTING WHEEE!!!!',
-            'ends_at': datetime.strftime(new_end_time, ISO_8601_FORMAT)
+            'ends_at': datetime.strftime(new_end_time, '%Y-%m-%d %H:%M:%S')
         })
 
         resp = self.client.patch('/api/events/80001/', payload, **headers)
@@ -227,7 +228,7 @@ class TestEditEvent(JSONTestCase):
         new_end_time = datetime(year=2019, month=10, day=16, hour=1)
         payload = json.dumps({
             'name': 'TESTING WHEEE!!!!',
-            'ends_at': datetime.strftime(new_end_time, ISO_8601_FORMAT)
+            'ends_at': datetime.strftime(new_end_time, '%Y-%m-%d %H:%M:%S')
         })
 
         resp = self.client.patch('/api/events/80001/', payload, **headers)
@@ -250,7 +251,7 @@ class TestEditEvent(JSONTestCase):
         new_end_time = datetime(year=2019, month=10, day=16, hour=1)
         payload = json.dumps({
             'name': 'TESTING WHEEE!!!!',
-            'ends_at': datetime.strftime(new_end_time, ISO_8601_FORMAT)
+            'ends_at': datetime.strftime(new_end_time, '%Y-%m-%d %H:%M:%S')
         })
 
         resp = self.client.patch('/api/events/80001/', payload, **headers)
