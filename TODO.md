@@ -30,9 +30,9 @@
 - [x] api tests for edit event
   - [x] enforce start time lt end time
   - [x] split up event view tests
-- [ ] implement register/unregister in api
-  - [ ] views/serializers
-  - [ ] tests
+- [x] implement register/unregister in api
+  - [x] views/serializers
+  - [x] tests
 - [ ] soft-delete events
   - [ ] model, migration & serializers
   - [ ] update fixtures

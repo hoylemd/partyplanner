@@ -8,7 +8,7 @@ from django.db import IntegrityError
 from rest_framework import viewsets, views, permissions
 from rest_framework.response import Response
 
-from events.models import Event
+from events.models import Event, Attendance
 from events.serializers import EventSerializer, AttendanceSerializer
 from events.permissions import ObjectOwnership
 
@@ -53,8 +53,21 @@ class RegisterView(views.APIView):
 
         return Response(serializer.errors, status=400)
 
-    def delete(self, request):
-        pass
+    def delete(self, request, pk):
+        user = request.user
+        try:
+            event = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response({'detail': 'Event not found.'}, status=404)
+
+        try:
+            record = event.attendance_set.get(user=user)
+            record.delete()
+            return Response('', status=204)
+        except Attendance.DoesNotExist:
+            return Response({
+                'detail': 'You have not registered for this event.'
+            }, status=404)
 
 
 # === Below views for static page app ===
