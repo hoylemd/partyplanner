@@ -125,7 +125,8 @@ class JSONTestCase(TestCase):
         Attempts to compose a highly readable error report too
 
         :param response : The test client response to test
-        :param spec dict: spec for the body to test against
+        :param spec dict: spec for the body to test against, or None if a
+            bodyless response is expected.
         :param status_code int: expected HTTP status code. Pass a falsy value
             to disable status_code check. default 200
         :param msg_prefix str: Message with which to prefix the error
@@ -149,6 +150,19 @@ class JSONTestCase(TestCase):
                 f"======:\n{content}"
             )
             raise AssertionError(msg)
+
+        # spec=None means no body expected
+        if spec is None:
+            if response.content:
+                msg = (
+                    f"{(msg_prefix + ': ') if msg_prefix else ''}"
+                    f"Content found when bodyless response specified: "
+                    f"======:\n{response.content}"
+                )
+                raise AssertionError(msg)
+            else:
+                # no body, status already checked, looks good!
+                return
 
         try:
             # handle non-json payloads
