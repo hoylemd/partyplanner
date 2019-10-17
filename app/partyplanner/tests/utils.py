@@ -192,9 +192,20 @@ def is_absent(value=None):
     return f"Has a value where there should be none ({value})"
 
 
+def is_datetime(value=None):
+    from django.utils.dateparse import parse_datetime
+    """Returns true if `value` is parseable to a datetime"""
+    try:
+        parse_datetime(value)
+    except Exception:
+        return False
+    return True
+
+
 class SpecHelpers:
     is_jwt = is_jwt
     is_absent = is_absent
+    is_datetime = is_datetime
 
 
 def make_token(user, expired=False):
