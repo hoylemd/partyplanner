@@ -1,7 +1,7 @@
 from django.utils.dateparse import parse_datetime
 from rest_framework import serializers
 
-from events.models import Event
+from events.models import Event, Attendance
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -30,3 +30,10 @@ class EventSerializer(serializers.ModelSerializer):
             'pk', 'created_at', 'owner_id', 'name', 'description',
             'starts_at', 'ends_at', 'image'
         )
+
+
+class AttendanceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Attendance
+        fields = ('created_at', 'user', 'event')

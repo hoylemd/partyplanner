@@ -5,10 +5,11 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
-from rest_framework import viewsets
+from rest_framework import viewsets, views, permissions
+from rest_framework.response import Response
 
 from events.models import Event
-from events.serializers import EventSerializer
+from events.serializers import EventSerializer, AttendanceSerializer
 from events.permissions import ObjectOwnership
 
 
@@ -20,6 +21,43 @@ class EventViewset(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """On create, set the owner to the request user"""
         serializer.save(owner=self.request.user)
+
+
+class RegisterView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        user = request.user
+        try:
+            event = Event.objects.get(pk=pk)
+        except Event.DoesNotExist:
+            return Response({'detail': 'Event not found.'}, status=404)
+
+        serializer = AttendanceSerializer(data={
+            'user': user.pk,
+            'event': event.pk
+        })
+
+        if serializer.is_valid():
+            try:
+                serializer.save()
+                return Response(serializer.data, status=201)
+            except IntegrityError:
+                return Response(serializer.data, status=200)
+        else:
+            nf_errors = serializer.errors.get('non_field_errors', None)
+            if nf_errors and nf_errors[0].code == 'unique':
+                return Response({
+                    'detail': 'You are already registered for this event.'
+                }, status=400)
+
+        return Response(serializer.errors, status=400)
+
+    def delete(self, request):
+        pass
+
+
+# === Below views for static page app ===
 
 
 class OwnerOnlyAccessMixin(AccessMixin):
