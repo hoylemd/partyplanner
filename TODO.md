@@ -33,15 +33,17 @@
 - [x] implement register/unregister in api
   - [x] views/serializers
   - [x] tests
+- [ ] implement react router
+- [ ] implement create event in react
+- [ ] implement event details in react
+- [ ] implement register/unregister
+- [ ] implement edit event in react
 - [ ] soft-delete events
   - [ ] model, migration & serializers
   - [ ] update fixtures
   - [ ] views
   - [ ] tests
-- [ ] implement create event in react
-- [ ] implement event details in react
-- [ ] implement register/unregister
-- [ ] implement edit event in react
+
 
 ## Nice-to-have
 

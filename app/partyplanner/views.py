@@ -56,6 +56,8 @@ class Signup(FormView):
 
         return super().form_valid(form)
 
+# API Views start here
+
 
 # /whoami/
 class CurrentUser(APIView):
@@ -73,7 +75,6 @@ class UserList(APIView):
     Create a new user. It's called 'UserList' because normally we'd have a get
     method here too, for retrieving a list of all User objects.
     """
-
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):

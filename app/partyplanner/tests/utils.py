@@ -124,13 +124,13 @@ class JSONTestCase(TestCase):
 
         Attempts to compose a highly readable error report too
 
-        :param response : The test client response to test
+        :param response: The test client response to test
         :param spec dict: spec for the body to test against, or None if a
             bodyless response is expected.
         :param status_code int: expected HTTP status code. Pass a falsy value
             to disable status_code check. default 200
-        :param msg_prefix str: Message with which to prefix the error
-            default: 'JSON Mismatch'
+        :param msg_prefix str: Message with which to prefix the error. optional
+
         :returns: a dict mapping erroneous field keys to a reason string or a
             similar dict for nested layers
         :raises AssertionError: if the status code is wrong or some keys are
@@ -165,7 +165,7 @@ class JSONTestCase(TestCase):
                 return
 
         try:
-            # handle non-json payloads
+            # handle non-json payloads, which is an error
             content = response.json()
         except (ValueError, JSONDecodeError) as exc:
             msg = (
@@ -176,7 +176,9 @@ class JSONTestCase(TestCase):
             )
             raise AssertionError(msg) from exc
 
+        # do the json check
         bad_keys = check_dict_keys(content, spec)
+
         if bad_keys:
             msg = (
                 f"{(msg_prefix + ': ') if msg_prefix else ''}"
@@ -212,7 +214,7 @@ def is_datetime(value=None):
     try:
         parse_datetime(value)
     except Exception:
-        return False
+        return "Not a JWT"
     return True
 
 
