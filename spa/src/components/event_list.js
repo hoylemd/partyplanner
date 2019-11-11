@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {Link} from 'react-router-dom';
+
 class EventList extends React.Component {
 
   make_create_button() {
@@ -18,11 +20,9 @@ class EventList extends React.Component {
       events.forEach(event => {
         let element = (
           <li key={event.pk}>
-            <button
-              onClick={() => this.props.set_page('event_detail', event.pk)}
-            >
+            <Link to={`/app/events/${event.pk}`}>
               {event.name}
-            </button>
+            </Link>
           </li>
         );
         elements.push(element);

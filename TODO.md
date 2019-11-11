@@ -33,9 +33,9 @@
 - [x] implement register/unregister in api
   - [x] views/serializers
   - [x] tests
-- [/] implement react router
+- [x] implement react router
   - [x] fix logout
-  - [ ] fix event list
+  - [x] fix event list
     - [x] fix event details
       - [x] handle 404
 - [ ] implement create event in react
