@@ -8,8 +8,8 @@ class Header extends React.Component {
   logged_out_nav () {
     return(
       <ul>
-        <li><Link to="/">login</Link></li>
-        <li><Link to="/signup">signup</Link></li>
+        <li><Link to="/app">login</Link></li>
+        <li><Link to="/app/signup">signup</Link></li>
       </ul>
     );
   }
@@ -18,7 +18,7 @@ class Header extends React.Component {
     return (
       <ul>
         <li>Welcome, {this.props.user.first_name}</li>
-        <li><Link to="/logout">logout</Link></li>
+        <li><Link to="/app/logout">logout</Link></li>
       </ul>
     );
   }

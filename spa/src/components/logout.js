@@ -7,7 +7,10 @@ class Logout extends React.Component {
     this.props.handle_logout();
 
     return (
-      <Redirect to="/"/>
+      <div>
+        hello!
+        <Redirect to="/app"/>
+      </div>
     );
   }
 }

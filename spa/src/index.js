@@ -89,9 +89,9 @@ class PartyPlanner extends React.Component {
   }
 
   async componentDidMount() {
-    // if (this.state.not_logged_in) {
-    //  return;
-    // }
+    if (this.state.not_logged_in) {
+      return;
+    }
 
     const response = await fetch(`${API_HOST}/whoami/`, {
       headers: {
@@ -115,21 +115,25 @@ class PartyPlanner extends React.Component {
           handle_logout={this.handle_logout}
         />
         <Switch>
-          <Route path="/">
-            <LoginForm handle_login={this.handle_login} user={this.state.user}/>
-          </Route>
-          <Route path="/signup">
+          <Route path="/app/signup">
             <SignupForm handle_signup={this.handle_signup} />
           </Route>
-          <Route path="/events">
+          <Route path="/app/events">
+            event list
             <EventList
               api_host={API_HOST}
               is_logged_in={!this.state.not_logged_in}
               set_page={this.set_page}
             />
           </Route>
-          <Route path="/logout">
+          <Route path="/app/logout">
             <Logout handle_logout={this.handle_logout} />
+          </Route>
+          <Route path="/app">
+            <LoginForm handle_login={this.handle_login} user={this.state.user}/>
+          </Route>
+          <Route>
+            not found :(
           </Route>
         </Switch>
       </Router>

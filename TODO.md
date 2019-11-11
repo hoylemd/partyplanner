@@ -33,7 +33,9 @@
 - [x] implement register/unregister in api
   - [x] views/serializers
   - [x] tests
-- [ ] implement react router
+- [/] implement react router
+  - [x] fix logout
+  - [ ] fix event list
 - [ ] implement create event in react
 - [ ] implement event details in react
 - [ ] implement register/unregister
@@ -43,7 +45,7 @@
   - [ ] update fixtures
   - [ ] views
   - [ ] tests
-
+- [ ] login failure feedback
 
 ## Nice-to-have
 

@@ -16,7 +16,7 @@ class LoginForm extends React.Component {
   render() {
     if (this.props.user) {
       return (
-        <Redirect to="events"/>
+        <Redirect to="/app/events"/>
       )
     }
 
