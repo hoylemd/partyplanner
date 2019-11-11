@@ -1,12 +1,15 @@
 import React from 'react';
+import {
+    Link
+} from "react-router-dom";
 import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   logged_out_nav () {
     return(
       <ul>
-        <li onClick={() => this.props.set_page('login')}>login</li>
-        <li onClick={() => this.props.set_page('signup')}>signup</li>
+        <li><Link to="/">login</Link></li>
+        <li><Link to="/signup">signup</Link></li>
       </ul>
     );
   }
@@ -15,7 +18,7 @@ class Header extends React.Component {
     return (
       <ul>
         <li>Welcome, {this.props.user.first_name}</li>
-        <li onClick={this.props.handle_logout}>logout</li>
+        <li><Link to="/logout">logout</Link></li>
       </ul>
     );
   }
@@ -23,7 +26,9 @@ class Header extends React.Component {
   render() {
     return (
       <div className="header">
-        {this.props.user ? this.logged_in_nav() : this.logged_out_nav()}
+        <nav>
+          {this.props.user ? this.logged_in_nav() : this.logged_out_nav()}
+        </nav>
       </div>
     );
   }

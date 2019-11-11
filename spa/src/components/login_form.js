@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 class LoginForm extends React.Component {
   handle_change = (e) => {
@@ -13,6 +14,12 @@ class LoginForm extends React.Component {
   };
 
   render() {
+    if (this.props.user) {
+      return (
+        <Redirect to="events"/>
+      )
+    }
+
     return (
       <form onSubmit={e => this.props.handle_login(e, this.state)}>
         <h4>Log In</h4>
@@ -44,7 +51,8 @@ class LoginForm extends React.Component {
   }
 }
 LoginForm.propTypes = {
-  handle_login: PropTypes.func.isRequired
+  handle_login: PropTypes.func.isRequired,
+  user: PropTypes.object
 };
 
 export default LoginForm;

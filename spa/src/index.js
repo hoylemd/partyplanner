@@ -1,8 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+} from "react-router-dom";
 
 import Header from './components/header';
 import LoginForm from './components/login_form';
+import Logout from './components/logout';
 import SignupForm from './components/signup_form';
 import EventList from './components/event_list';
 import EventDetail from './components/event_detail';
@@ -24,7 +30,6 @@ class PartyPlanner extends React.Component {
     localStorage.setItem('token', blob.token);
     this.setState({
       not_logged_in: false,
-      displayed_page: 'event_list',
       user: blob.user
     });
   };
@@ -41,7 +46,6 @@ class PartyPlanner extends React.Component {
     localStorage.setItem('token', blob.token);
     this.setState({
       not_logged_in: false,
-      displayed_page: 'event_list',
       user: blob
     });
   };
@@ -51,44 +55,14 @@ class PartyPlanner extends React.Component {
     this.setState({
       not_logged_in: true,
       user: null,
-      displayed_page: 'login'
     });
   };
 
   set_page = (form, pk) => {
     pk = pk || null;
     this.setState({
-      displayed_page: form,
       pk: pk
     });
-  };
-
-  make_login_form = () => {
-    return (
-      <LoginForm handle_login={this.handle_login} />
-    );
-  };
-
-  make_signup_form = () => {
-    return (
-      <SignupForm handle_signup={this.handle_signup} />
-    );
-  };
-
-  make_event_list = () => {
-    return (
-      <EventList
-        api_host={API_HOST}
-        is_logged_in={!this.state.not_logged_in}
-        set_page={this.set_page}
-      />
-    );
-  };
-
-  make_event_form = () => {
-    return (
-      <div>Event form</div>
-    );
   };
 
   make_event_detail = (pk) => {
@@ -115,10 +89,9 @@ class PartyPlanner extends React.Component {
   }
 
   async componentDidMount() {
-    if (this.state.not_logged_in) {
-      this.setState({ displayed_page: 'login'});
-      return;
-    }
+    // if (this.state.not_logged_in) {
+    //  return;
+    // }
 
     const response = await fetch(`${API_HOST}/whoami/`, {
       headers: {
@@ -129,30 +102,43 @@ class PartyPlanner extends React.Component {
     if (response.ok) {
       this.setState({ user: blob });
     } else {
-      this.setState({ displayed_page: 'login'});
       throw Error(`${response.statusText}: ${blob['detail']}`);
     }
   }
 
   render() {
-    let page = this.get_page(this.state.displayed_page, this.state.pk);
-
     return (
-      <div className="partyPlanner">
+      <Router className="partyPlanner">
         <Header
           user={this.state.user}
           set_page={this.set_page}
           handle_logout={this.handle_logout}
         />
-        {page}
-      </div>
+        <Switch>
+          <Route path="/">
+            <LoginForm handle_login={this.handle_login} user={this.state.user}/>
+          </Route>
+          <Route path="/signup">
+            <SignupForm handle_signup={this.handle_signup} />
+          </Route>
+          <Route path="/events">
+            <EventList
+              api_host={API_HOST}
+              is_logged_in={!this.state.not_logged_in}
+              set_page={this.set_page}
+            />
+          </Route>
+          <Route path="/logout">
+            <Logout handle_logout={this.handle_logout} />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      displayed_page: '',
       not_logged_in: localStorage.getItem('token') ? false : true,
       user: null
     };
