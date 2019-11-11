@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class EventDetail extends React.Component {
   make_event_details(event) {
@@ -40,16 +41,19 @@ class EventDetail extends React.Component {
     );
   }
 
-  componentDidMount() {
-    fetch(`${this.props.api_host}/events/${this.props.pk}`, {
+  async componentDidMount() {
+    const url = `${this.props.api_host}/events/${this.props.pk}`;
+    const response = await fetch(url, {
       headers: {
         Authorization: `JWT ${localStorage.getItem('token')}`
       }
     })
-    .then(response => response.json())
-    .then(blob => {
+    const blob = await response.json();
+    if (response.ok) {
       this.setState({event: blob});
-    });
+    } else {
+      this.setState({notFound: true});
+    }
   }
 
   render () {
@@ -59,13 +63,19 @@ class EventDetail extends React.Component {
 
     if (this.state.event) {
       event_details = this.make_event_details(this.state.event);
+    } else if (this.state.notFound) {
+      event_details = (
+        <div className="not_found">
+          Sorry, Event with id '{this.props.pk}' was not found.
+        </div>
+      )
     }
 
     return (
       <div className="event_detail">
-        <button onClick={() => this.props.set_page('event_list')}>
+        <Link to="/app/events">
           Back to List
-        </button>
+        </Link>
         <div className="event">
           {event_details}
         </div>

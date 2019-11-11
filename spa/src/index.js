@@ -118,7 +118,7 @@ class PartyPlanner extends React.Component {
           <Route path="/app/signup">
             <SignupForm handle_signup={this.handle_signup} />
           </Route>
-          <Route path="/app/events">
+          <Route exact path="/app/events">
             event list
             <EventList
               api_host={API_HOST}
@@ -126,6 +126,14 @@ class PartyPlanner extends React.Component {
               set_page={this.set_page}
             />
           </Route>
+          <Route
+            path="/app/events/:id"
+            render={
+              (props) => <EventDetail
+                          pk={props.match.params.id}
+                          api_host={API_HOST}/>
+            }
+          />
           <Route path="/app/logout">
             <Logout handle_logout={this.handle_logout} />
           </Route>
@@ -133,7 +141,7 @@ class PartyPlanner extends React.Component {
             <LoginForm handle_login={this.handle_login} user={this.state.user}/>
           </Route>
           <Route>
-            not found :(
+            not found :c
           </Route>
         </Switch>
       </Router>

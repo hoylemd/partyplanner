@@ -36,8 +36,10 @@
 - [/] implement react router
   - [x] fix logout
   - [ ] fix event list
+    - [x] fix event details
+      - [x] handle 404
 - [ ] implement create event in react
-- [ ] implement event details in react
+- [x] implement event details in react
 - [ ] implement register/unregister
 - [ ] implement edit event in react
 - [ ] soft-delete events
