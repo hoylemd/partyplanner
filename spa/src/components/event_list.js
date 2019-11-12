@@ -49,7 +49,7 @@ class EventList extends React.Component {
       const blob = await response.json();
       return this.setState({events: blob});
     }
-    if (response.status == 401) {
+    if (response.status === 401) {
       return this.setState({goto: '/app'});
     }
 

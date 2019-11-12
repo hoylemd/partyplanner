@@ -104,7 +104,7 @@ class PartyPlanner extends React.Component {
       const blob = await response.json();
       return this.setState({ user: blob });
     }
-    if (response.status == 401) {
+    if (response.status === 401) {
       return this.setState({goto: '/app'});
     }
 
@@ -138,11 +138,12 @@ class PartyPlanner extends React.Component {
           </Route>
           <Route
             path="/app/events/:id"
-            render={
-              (props) => <EventDetail
-                          pk={props.match.params.id}
-                          api_host={API_HOST}/>
-            }
+            render={(props) => (
+              <EventDetail
+                pk={props.match.params.id}
+                api_host={API_HOST}
+              />
+            )}
           />
           <Route path="/app/logout">
             <Logout handle_logout={this.handle_logout} />

@@ -43,17 +43,28 @@ class EventDetail extends React.Component {
 
   async componentDidMount() {
     const url = `${this.props.api_host}/events/${this.props.pk}`;
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
-      }
-    })
-    const blob = await response.json();
+    const headers = {
+      Authorization: `JWT ${localStorage.getItem('token')}`
+    };
+    const response = await fetch(url, {headers: headers});
     if (response.ok) {
-      this.setState({event: blob});
-    } else {
-      this.setState({notFound: true});
+      const blob = await response.json();
+      return this.setState({event: blob});
     }
+    if (response.status === 401) {
+      return this.setState({goto: '/app'});
+    }
+    if (response.status === 404) {
+      this.setState({notFound: true});
+      throw Error(`event ${this.props.pk} not found`);
+    }
+
+    const message = `Error ${response.status}`;
+    console.log(message);
+    const blob = await response.json();
+    console.log(blob);
+
+    throw Error(message);
   }
 
   render () {

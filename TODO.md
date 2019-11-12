@@ -39,6 +39,7 @@
     - [x] fix event details
       - [x] handle 404
 - [x] handle 401
+- [ ] login failure feedback
 - [ ] implement create event in react
 - [x] implement event details in react
 - [ ] implement register/unregister
@@ -48,7 +49,6 @@
   - [ ] update fixtures
   - [ ] views
   - [ ] tests
-- [ ] login failure feedback
 
 ## Nice-to-have
 
