@@ -93,17 +93,27 @@ class PartyPlanner extends React.Component {
       return;
     }
 
-    const response = await fetch(`${API_HOST}/whoami/`, {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
-      }
-    })
-    const blob = await response.json()
+    const url = `${this.props.api_host}/whoami`;
+    const headers = {
+      Authorization: `JWT ${localStorage.getItem('token')}`
+    };
+
+    const response = await fetch(url, {headers: headers});
+
     if (response.ok) {
-      this.setState({ user: blob });
-    } else {
-      throw Error(`${response.statusText}: ${blob['detail']}`);
+      const blob = await response.json();
+      return this.setState({ user: blob });
     }
+    if (response.status == 401) {
+      return this.setState({goto: '/app'});
+    }
+
+    const message = `Error ${response.status}`;
+    console.log(message);
+    const blob = await response.json();
+    console.log(blob);
+
+    throw Error(message);
   }
 
   render() {

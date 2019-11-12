@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 class EventList extends React.Component {
 
@@ -32,28 +32,46 @@ class EventList extends React.Component {
     return elements;
   }
 
-  componentDidMount() {
-    fetch(`${this.props.api_host}/events/`, {
-      headers: {
-        Authorization: `JWT ${localStorage.getItem('token')}`
-      }
-    })
-    .then(response => response.json())
-    .then(blob => {
-      this.setState({events: blob});
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  async componentDidMount() {
+    if (!this.props.is_logged_in) {
+      this.setState({'goto': '/app'});
+      return;
+    }
+
+    const url = `${this.props.api_host}/events/`;
+    const headers = {
+      Authorization: `JWT ${localStorage.getItem('token')}`
+    };
+
+    const response = await fetch(url, {headers: headers});
+
+    if (response.ok) {
+      const blob = await response.json();
+      return this.setState({events: blob});
+    }
+    if (response.status == 401) {
+      return this.setState({goto: '/app'});
+    }
+
+    const message = `Error ${response.status}`;
+    console.log(message);
+    const blob = await response.json();
+    console.log(blob);
+
+    throw Error(message);
   }
 
   render() {
-    let create_button = null;
-    if (this.props.is_logged_in) {
-      create_button = this.make_create_button();
+    // Handle nav directive
+    if (this.state.goto) {
+      return (
+        <Redirect to={this.state.goto} />
+      )
     }
 
-    let event_elements = this.make_event_elements(this.state.events);
+    const create_button = this.make_create_button();
+
+    const event_elements = this.make_event_elements(this.state.events);
 
     return (
       <div className="event_list">
