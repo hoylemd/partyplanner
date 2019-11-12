@@ -38,7 +38,7 @@
   - [x] fix event list
     - [x] fix event details
       - [x] handle 404
-- [ ] handle 401
+- [x] handle 401
 - [ ] implement create event in react
 - [x] implement event details in react
 - [ ] implement register/unregister
