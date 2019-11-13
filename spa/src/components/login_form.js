@@ -13,6 +13,25 @@ class LoginForm extends React.Component {
     });
   };
 
+  handle_submit = async (e, data) => {
+    e.preventDefault();
+
+    const response = await fetch(`${this.props.api_host}/token-auth/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+
+    if (response.ok) {
+      const blob = await response.json();
+      return this.props.handle_login(blob.token, blob.user);
+    }
+
+    return this.setState({
+      login_failed: true
+    });
+  };
+
   render() {
     if (this.props.user) {
       return (
@@ -20,23 +39,35 @@ class LoginForm extends React.Component {
       )
     }
 
+    let error_display = '';
+    if (this.state.login_failed) {
+      error_display = (
+        <div className="error">
+          Sorry, login failed. Check your credentials and try again.
+        </div>
+      );
+    }
+
     return (
-      <form onSubmit={e => this.props.handle_login(e, this.state)}>
-        <h4>Log In</h4>
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          name="username"
-          value={this.state.username}
-          onChange={this.handle_change}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          value={this.state.password}
-          onChange={this.handle_change}
-        />
+      <form onSubmit={e => this.handle_submit(e, this.state)}>
+        <div>
+          <h4>Log In</h4>
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            value={this.state.username}
+            onChange={this.handle_change}
+          />
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            value={this.state.password}
+            onChange={this.handle_change}
+          />
+        </div>
+        {error_display}
         <input type="submit" value="Log in"/>
       </form>
     );
@@ -46,13 +77,15 @@ class LoginForm extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      login_failed: false
     };
   }
 }
 LoginForm.propTypes = {
   handle_login: PropTypes.func.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object,
+  api_host: PropTypes.string
 };
 
 export default LoginForm;

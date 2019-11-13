@@ -32,12 +32,7 @@ class EventList extends React.Component {
     return elements;
   }
 
-  async componentDidMount() {
-    if (!this.props.is_logged_in) {
-      this.setState({'goto': '/app'});
-      return;
-    }
-
+  async get_events() {
     const url = `${this.props.api_host}/events/`;
     const headers = {
       Authorization: `JWT ${localStorage.getItem('token')}`
@@ -59,6 +54,16 @@ class EventList extends React.Component {
     console.log(blob);
 
     throw Error(message);
+  }
+
+  async componentDidMount() {
+    if (this.props.not_logged_in) {
+      return this.setState({'goto': '/app'});
+    }
+
+    if (!this.state.events) {
+      return await this.get_events();
+    }
   }
 
   render() {
@@ -94,7 +99,7 @@ class EventList extends React.Component {
 }
 EventList.propTypes = {
   api_host: PropTypes.string.isRequired,
-  is_logged_in: PropTypes.bool.isRequired,
+  not_logged_in: PropTypes.bool.isRequired,
   set_page: PropTypes.func.isRequired
 };
 

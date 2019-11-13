@@ -18,19 +18,11 @@ import './index.css';
 const API_HOST = 'http://localhost/api'
 
 class PartyPlanner extends React.Component {
-  handle_login = async (e, data) => {
-    e.preventDefault();
-
-    const response = await fetch(`${API_HOST}/token-auth/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    const blob = await response.json()
-    localStorage.setItem('token', blob.token);
-    this.setState({
+  handle_login = (token, user_data) => {
+    localStorage.setItem('token', token);
+    return this.setState({
       not_logged_in: false,
-      user: blob.user
+      user: user_data
     });
   };
 
@@ -93,7 +85,7 @@ class PartyPlanner extends React.Component {
       return;
     }
 
-    const url = `${this.props.api_host}/whoami`;
+    const url = `${API_HOST}/whoami/`;
     const headers = {
       Authorization: `JWT ${localStorage.getItem('token')}`
     };
@@ -132,7 +124,7 @@ class PartyPlanner extends React.Component {
             event list
             <EventList
               api_host={API_HOST}
-              is_logged_in={!this.state.not_logged_in}
+              not_logged_in={this.state.not_logged_in}
               set_page={this.set_page}
             />
           </Route>
@@ -149,7 +141,11 @@ class PartyPlanner extends React.Component {
             <Logout handle_logout={this.handle_logout} />
           </Route>
           <Route path="/app">
-            <LoginForm handle_login={this.handle_login} user={this.state.user}/>
+            <LoginForm
+              handle_login={this.handle_login}
+              user={this.state.user}
+              api_host={API_HOST}
+            />
           </Route>
           <Route>
             not found :c
@@ -163,7 +159,9 @@ class PartyPlanner extends React.Component {
     super(props);
     this.state = {
       not_logged_in: localStorage.getItem('token') ? false : true,
-      user: null
+      error: null,
+      user: null,
+      goto: null,
     };
   }
 }
