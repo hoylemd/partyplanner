@@ -40,10 +40,16 @@
       - [x] handle 404
 - [x] handle 401
 - [x] login failure feedback
-- [ ] implement create event in react
+- [/] implement create event in react
+  - [x] FormComponent
+    - [x] port login form
+    - [ ] port signup form
+  - [ ] EventForm component
+  - [ ] submit edit
+  - [ ] submit create
+  - [ ] connect links
 - [x] implement event details in react
 - [ ] implement register/unregister
-- [ ] implement edit event in react
 - [ ] soft-delete events
   - [ ] model, migration & serializers
   - [ ] update fixtures

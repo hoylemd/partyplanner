@@ -18,11 +18,11 @@ import './index.css';
 const API_HOST = 'http://localhost/api'
 
 class PartyPlanner extends React.Component {
-  handle_login = (token, user_data) => {
-    localStorage.setItem('token', token);
+  handle_login = (_data, blob, _response) => {
+    localStorage.setItem('token', blob.token);
     return this.setState({
       not_logged_in: false,
-      user: user_data
+      user: blob.user
     });
   };
 
@@ -142,9 +142,10 @@ class PartyPlanner extends React.Component {
           </Route>
           <Route path="/app">
             <LoginForm
-              handle_login={this.handle_login}
+              handle_success={this.handle_login}
+              endpoint={`${API_HOST}/token-auth/`}
+              submit_label='Log in'
               user={this.state.user}
-              api_host={API_HOST}
             />
           </Route>
           <Route>
