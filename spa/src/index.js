@@ -26,17 +26,9 @@ class PartyPlanner extends React.Component {
     });
   };
 
-  handle_signup = async (e, data) => {
-    e.preventDefault();
-
-    const response = await fetch(`${API_HOST}/users/`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    const blob = await response.json()
+  handle_signup = async (data, blob, response) => {
     localStorage.setItem('token', blob.token);
-    this.setState({
+    return this.setState({
       not_logged_in: false,
       user: blob
     });
@@ -117,11 +109,7 @@ class PartyPlanner extends React.Component {
           handle_logout={this.handle_logout}
         />
         <Switch>
-          <Route path="/app/signup">
-            <SignupForm handle_signup={this.handle_signup} />
-          </Route>
           <Route exact path="/app/events">
-            event list
             <EventList
               api_host={API_HOST}
               not_logged_in={this.state.not_logged_in}
@@ -137,6 +125,14 @@ class PartyPlanner extends React.Component {
               />
             )}
           />
+          <Route path="/app/signup">
+            <SignupForm
+              handle_success={this.handle_signup}
+              endpoint={`${API_HOST}/users/`}
+              submit_label='Sign up'
+              user={this.state.user}
+            />
+          </Route>
           <Route path="/app/logout">
             <Logout handle_logout={this.handle_logout} />
           </Route>

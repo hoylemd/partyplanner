@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class FormComponent extends React.Component {
-  fields = {};  // populate this in extensions!
+  fields = this.fields || {};  // populate this in extensions!
 
   /* e.g. field config
   fields = {
@@ -25,11 +25,14 @@ class FormComponent extends React.Component {
     /* submit the form via AJAX */
     e.preventDefault();
 
+    this.setState({errors: null, field_errors: {}});
+
     const response = await fetch(`${this.props.endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
-    })
+    });
+
 
     if (response.ok) {
       const blob = await response.json();
@@ -40,16 +43,35 @@ class FormComponent extends React.Component {
   };
 
   handle_failure = async (data, response) => {
-    this.setState({error:'Oepsie Woepsie! sumting went fucky-wucky!'});
+    const blob = await response.json();
+    let new_state = {...this.state};
+
+    let field = '';
+    for (field of Object.keys(blob)) {
+      new_state.field_errors[field] = blob[field];
+    }
+
+    new_state.errors = 'Oepsie Woepsie! sumting went fucky-wucky!';
+    this.setState(new_state);
   }
 
   makeField = (name, spec) => {
+    let error = '';
+    if (this.state.field_errors[name]) {
+      error = (
+        <span className={`error ${name}`}>
+          {this.state.field_errors[name]}
+        </span>
+      )
+    }
+
     return (
-      <>
+      <div className={`form-field ${name}`}>
         <label htmlFor={name}>{spec.label}</label>
-        <input type={spec.type} name={name} value={this.state[name]}
+        <input type={spec.type} name={name} value={this.state[name] || ''}
           onChange={this.handle_change} />
-      </>
+          {error}
+      </div>
     )
   }
 
@@ -90,6 +112,8 @@ class FormComponent extends React.Component {
 
     // config state
     this.state = this.state || {};
+
+    this.state.field_errors = {};
     let field = '';
     for (field of Object.keys(this.fields)) {
       // pre-load from object, if passed
@@ -98,8 +122,8 @@ class FormComponent extends React.Component {
       } else {
         this.state[field] = null;
       }
+      this.state.field_errors[field] = null;
     }
-
   }
 }
 

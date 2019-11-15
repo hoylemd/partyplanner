@@ -43,7 +43,7 @@
 - [/] implement create event in react
   - [x] FormComponent
     - [x] port login form
-    - [ ] port signup form
+    - [x] port signup form
   - [ ] EventForm component
   - [ ] submit edit
   - [ ] submit create
@@ -55,6 +55,7 @@
   - [ ] update fixtures
   - [ ] views
   - [ ] tests
+- [ ] unify signup/login flows
 
 ## Nice-to-have
 
